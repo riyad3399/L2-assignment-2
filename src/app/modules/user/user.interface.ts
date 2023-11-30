@@ -1,7 +1,6 @@
-export type TOrders = {
-  productName: string;
-  price: number;
-  quantity: number;
+export type TFullName = {
+  firstName: string;
+  lastName: string;
 };
 
 export type TAddress = {
@@ -10,18 +9,21 @@ export type TAddress = {
   country: string;
 };
 
+export type TOrders = {
+  productName: string;
+  price: number;
+  quantity: number;
+};
+
 export type TUser = {
   userId: number;
   username: string;
   password: string;
-  fullName: {
-    firstName: string;
-    lastName: string;
-  };
+  fullName: TFullName;
   age: number;
   email: string;
   isActive: boolean;
-  hobbies: Array<string>;
+  hobbies: string[];
   address: TAddress;
-  orders: TOrders[];
+  orders?: TOrders[];
 };
