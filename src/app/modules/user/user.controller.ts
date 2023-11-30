@@ -9,10 +9,10 @@ const createUser = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: "User is create successful",
+      message: "User created successfully!",
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
       message: "Something went wrong!",
@@ -21,6 +21,23 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
+const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const result = await userServices.getAllUsersIntoDB();
+    res.status(200).json({
+      success: true,
+      message: "Users fetched successfully!",
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong!",
+    });
+  }
+};
+
 export const userControllers = {
   createUser,
+  getAllUsers
 };
