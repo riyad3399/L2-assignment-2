@@ -29,6 +29,7 @@ export type TUser = {
   hobbies: string[];
   address: TAddress;
   orders?: TOrders[];
+  isDelete: boolean
 };
 
 
