@@ -7,4 +7,5 @@ router.get("/", userControllers.getAllUsers)
 router.get("/:userId", userControllers.getSingleUser)
 router.post("/", userControllers.createUser);
 
+
 export const userRoutes = router 

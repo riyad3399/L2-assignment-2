@@ -1,10 +1,9 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from "mongoose";
-import {
-  TAddress,
-  TFullName,
-  TOrders,
-  TUser,
-} from "./user/user.interface";
+import { TAddress, TFullName, TOrders, TUser, userMethod, userModel} from "./user/user.interface";
+import bcrypt from "bcrypt";
+import config from "../config";
 
 const fullNameSchema = new Schema<TFullName>({
   firstName: {
@@ -47,7 +46,7 @@ const ordersSchema = new Schema<TOrders>({
   },
 });
 
-const userSchema = new Schema<TUser>({
+const userSchema = new Schema<TUser, userModel, userMethod>({
   userId: {
     type: Number,
     required: [true, "userId is Required"],
@@ -91,8 +90,26 @@ const userSchema = new Schema<TUser>({
     type: [ordersSchema],
     default: [],
   },
+}, {id: false});
+
+userSchema.pre("save", async function (next) {
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_round)
+  );
+  next();
 });
 
+userSchema.post("save", async function (doc, next) {
+  doc.password = "",
+    
+  next();
+})
 
+userSchema.methods.isUserExists = async function (id: number) {
+  const userExists = User.findOne({ userId: id })
+  return userExists
+}
 
-export const User = model<TUser>("User", userSchema);
+export const User = model<TUser, userModel>("User", userSchema);
